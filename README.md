@@ -2,7 +2,7 @@
 Manage AppAmormor profiles for Kubernetes cluster
 
 ## Behind the Scenes
-- `AppArmorProfile` CRD is created and AppArmorProfile objects are stored in etcd.
+- `AppArmorProfile` CRD is created and `AppArmorProfile` objects are stored in etcd.
 - Actual AppArmor profiles will be created(updated) acorss all worker nodes through synchronizing with `AppArmorProfile` objects.
 
 ## Usage
