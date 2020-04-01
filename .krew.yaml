@@ -3,21 +3,23 @@ kind: Plugin
 metadata:
   name: aa
 spec:
-  version: {{ .TagName }}
+  version: v0.0.1
   homepage: https://github.com/sysdiglabs/kube-apparmor-manager
   platforms:
   - selector:
       matchLabels:
         os: darwin
         arch: amd64
-    {{addURIAndSha "https://github.com/sysdiglabs/kube-apparmor-manager/releases/download/{{ .TagName }}/kube-apparmor-manager_{{ .TagName }}_darwin_amd64.tar.gz" .TagName }}
-    bin: kubectl-aa
+    uri: https://github.com/sysdiglabs/kube-apparmor-manager/releases/download/v0.0.1/kube-apparmor-manager_v0.0.1_darwin_amd64.tar.gz 
+    sha256: a78af975b9a4eaa48f65d145b07fd4f4fcb95431057217a5a32b6f9dd2ff51fd 
+    bin: kube-apparmor-manager
   - selector:
       matchLabels:
         os: linux
         arch: amd64
-    {{addURIAndSha "https://github.com/sysdiglabs/kube-apparmor-manager/releases/download/{{ .TagName }}/kube-apparmor-manager_{{ .TagName }}_linux_amd64.tar.gz" .TagName }}
-    bin: kubectl-aa
+    uri: https://github.com/sysdiglabs/kube-apparmor-manager/releases/download/v0.0.1/kube-apparmor-manager_v0.0.1_linux_amd64.tar.gz 
+    sha256: 23298677e81b1116e95481b9677a31ccc8fd75f418bed79b472c7c2215c0fee9
+    bin: kube-apparmor-manager
   shortDescription: Manage AppArmor profiles for cluster.
   description: |
     Manage AppArmor profiles through AppArmorProfile CRD and sync across all worker nodes.

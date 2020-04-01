@@ -1,5 +1,5 @@
 apiVersion: crd.security.sysdig.com/v1alpha1
-kind: ApparmorProfile
+kind: AppArmorProfile
 metadata:
   name: apparmorprofile-sample
 spec:

@@ -13,9 +13,9 @@ const (
 )
 
 type AppArmorProfileInterface interface {
-	List(opts metav1.ListOptions) (*v1alpha1.ApparmorProfileList, error)
-	Get(name string, options metav1.GetOptions) (*v1alpha1.ApparmorProfile, error)
-	Create(*v1alpha1.ApparmorProfile) (*v1alpha1.ApparmorProfile, error)
+	List(opts metav1.ListOptions) (*v1alpha1.AppArmorProfileList, error)
+	Get(name string, options metav1.GetOptions) (*v1alpha1.AppArmorProfile, error)
+	Create(*v1alpha1.AppArmorProfile) (*v1alpha1.AppArmorProfile, error)
 	Watch(opts metav1.ListOptions) (watch.Interface, error)
 	// ...
 }
@@ -24,8 +24,8 @@ type appArmorProfileClient struct {
 	restClient rest.Interface
 }
 
-func (c *appArmorProfileClient) List(opts metav1.ListOptions) (*v1alpha1.ApparmorProfileList, error) {
-	result := v1alpha1.ApparmorProfileList{}
+func (c *appArmorProfileClient) List(opts metav1.ListOptions) (*v1alpha1.AppArmorProfileList, error) {
+	result := v1alpha1.AppArmorProfileList{}
 	err := c.restClient.
 		Get().
 		Resource(apparmorProfiles).
@@ -36,8 +36,8 @@ func (c *appArmorProfileClient) List(opts metav1.ListOptions) (*v1alpha1.Apparmo
 	return &result, err
 }
 
-func (c *appArmorProfileClient) Get(name string, opts metav1.GetOptions) (*v1alpha1.ApparmorProfile, error) {
-	result := v1alpha1.ApparmorProfile{}
+func (c *appArmorProfileClient) Get(name string, opts metav1.GetOptions) (*v1alpha1.AppArmorProfile, error) {
+	result := v1alpha1.AppArmorProfile{}
 	err := c.restClient.
 		Get().
 		Resource(apparmorProfiles).
@@ -49,8 +49,8 @@ func (c *appArmorProfileClient) Get(name string, opts metav1.GetOptions) (*v1alp
 	return &result, err
 }
 
-func (c *appArmorProfileClient) Create(profile *v1alpha1.ApparmorProfile) (*v1alpha1.ApparmorProfile, error) {
-	result := v1alpha1.ApparmorProfile{}
+func (c *appArmorProfileClient) Create(profile *v1alpha1.AppArmorProfile) (*v1alpha1.AppArmorProfile, error) {
+	result := v1alpha1.AppArmorProfile{}
 	err := c.restClient.
 		Post().
 		Resource(apparmorProfiles).

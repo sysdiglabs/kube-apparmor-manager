@@ -11,9 +11,9 @@ const (
 
 	GroupName = "crd.security.sysdig.com"
 
-	Kind = "ApparmorProfile"
+	Kind = "AppArmorProfile"
 
-	ListKind = "ApparmorProfileList"
+	ListKind = "AppArmorProfileList"
 
 	Plural = "apparmorprofiles"
 
@@ -31,8 +31,8 @@ var (
 
 func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
-		&ApparmorProfile{},
-		&ApparmorProfileList{},
+		&AppArmorProfile{},
+		&AppArmorProfileList{},
 	)
 
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)

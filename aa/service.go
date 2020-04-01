@@ -19,10 +19,6 @@ const (
 	envSSHPERMFile   = "SSH_PERM_FILE"
 	envSSHPassPhrase = "SSH_PASSPHRASE"
 
-	Enabled  = "Enabled"
-	Disabled = "Disabled"
-	Unknown  = "Unknown"
-
 	SSH_PORT = "22"
 )
 
