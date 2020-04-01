@@ -5,6 +5,11 @@ Manage AppAmormor profiles for Kubernetes cluster
 - `AppArmorProfile` CRD is created and `AppArmorProfile` objects are stored in etcd.
 - Actual AppArmor profiles will be created(updated) acorss all worker nodes through synchronizing with `AppArmorProfile` objects.
 
+## Configure Environment
+- `SSH_USERNAME`: SSH username to access worker nodes (default: admin)
+- `SSH_PERM_FILE`: SSH private key to access worker ndoes (default: $HOME/.ssh/id_rsa)
+- `SSH_PASSPHRASE`: SSH passphrase (only applicable if the private key is passphrase protected)
+
 ## Usage
 ```
 Usage:
