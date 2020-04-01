@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echo-apparmor
+  annotations:
+    # only the last apparmor works
+#    container.apparmor.security.beta.kubernetes.io/echo: localhost/k8s-apparmor-block-shell
+#    container.apparmor.security.beta.kubernetes.io/echo: localhost/k8s-apparmor-block-echo
+spec:
+  hostPID: true
+  containers:
+  - name: echo
+    image: busybox
+    securityContext:
+      privileged: true
+    volumeMounts:
+    - name: etc-initd
+      mountPath: /host/etc-initd
+    - name: etc-apparmord
+      mountPath: /host/etc-apparmord
+    - name: lib
+      mountPath: /lib
+    command: [ "sh", "-c", "echo 'Hello AppArmor!' && sleep 1h" ]
+  volumes:
+  - name: etc-initd
+    hostPath:
+      path: /etc/init.d
+      type: Directory
+  - name: etc-apparmord
+    hostPath:
+      path: /etc/apparmor.d
+      type: Directory
+  - name: lib
+    hostPath:
+      path: /lib
+      type: Directory

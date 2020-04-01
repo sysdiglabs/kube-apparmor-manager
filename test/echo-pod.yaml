@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-apparmor
+  annotations:
+    # Tell Kubernetes to apply the AppArmor profile "apparmorprofile-sample".
+    container.apparmor.security.beta.kubernetes.io/hello: localhost/apparmorprofile-sample
+spec:
+  containers:
+  - name: hello
+    image: busybox
+    command: [ "sh", "-c", "echo 'Hello AppArmor!' && sleep 1h" ]

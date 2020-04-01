@@ -1,0 +1,14 @@
+apiVersion: crd.security.sysdig.com/v1alpha1
+kind: ApparmorProfile
+metadata:
+  name: apparmorprofile-sample
+spec:
+  # Add fields here
+  rules: |
+    allow /etc/* r,
+    allow /tmp/* rw,
+    # allow only a few commands
+    allow /bin/echo mrix,
+    allow /bin/sleep mrix,
+    allow /bin/cat mrix,
+  enforced: true

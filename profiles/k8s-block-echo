@@ -1,0 +1,9 @@
+profile k8s-apparmor-block-echo flags=(no_attach_disconnected) {
+
+  allow /etc/* r,
+  allow /tmp/* rw,
+  # allow only a few commands 
+  allow /bin/echo mrix,
+  allow /bin/sleep mrix,
+  allow /bin/cat mrix,
+}
