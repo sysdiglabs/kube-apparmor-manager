@@ -78,16 +78,6 @@ func (aa *AppArmor) InstallAppArmor() error {
 	}
 
 	for _, node := range nodes {
-		enabled, err := aa.enabled(node)
-
-		if err != nil {
-			return err
-		}
-
-		if enabled {
-			continue
-		}
-
 		err = aa.install(node)
 
 		if err != nil {
@@ -102,24 +92,18 @@ func (aa *AppArmor) install(node *types.Node) error {
 		return nil
 	}
 
-	enabled, err := aa.enabled(node)
-
-	if err != nil {
-		return err
-	}
-
-	if enabled {
-		klog.Infof("AppArmor was enabled on node: %s (external IP: %s)", node.NodeName, node.ExternalIP)
-		return nil
-	}
-
-	err = aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	err := aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
 
 	if err != nil {
 		return err
 	}
 
 	defer aa.sshClient.Close()
+
+	if aa.enabledInConnection(node) {
+		klog.Infof("AppArmor was enabled on node: %s (external IP: %s)", node.NodeName, node.ExternalIP)
+		return nil
+	}
 
 	err = aa.sshClient.ExecuteBatch(commands.InstallAppArmor, true)
 
@@ -168,6 +152,11 @@ func (aa *AppArmor) syncProfile(node *types.Node, profile types.AppArmorProfile)
 
 	defer aa.sshClient.Close()
 
+	if !aa.enabledInConnection(node) {
+		klog.Infof("AppArmor was not enabled on node: %s (external IP: %s), no sync happen.", node.NodeName, node.ExternalIP)
+		return nil
+	}
+
 	err = aa.sshClient.ExecuteBatch(commands.CreateProfileCommands(profile), true)
 
 	if err != nil {
@@ -177,7 +166,8 @@ func (aa *AppArmor) syncProfile(node *types.Node, profile types.AppArmorProfile)
 	if profile.Enforced {
 		err = aa.sshClient.ExecuteBatch(commands.EnforceProfileCommands(profile), true)
 	} else {
-		err = aa.sshClient.ExecuteBatch(commands.DisableProfileCommands(profile), true)
+		// turn it into complain mode
+		err = aa.sshClient.ExecuteBatch(commands.ComplainProfileCommands(profile), true)
 	}
 
 	if err != nil {
@@ -217,22 +207,26 @@ func (aa *AppArmor) enabled(node *types.Node) (bool, error) {
 
 	defer aa.sshClient.Close()
 
+	return aa.enabledInConnection(node), nil
+}
+
+func (aa *AppArmor) enabledInConnection(node *types.Node) bool {
 	stdout, stderr, err := aa.sshClient.ExecuteOne(commands.AAEnable, true)
 
 	if err != nil {
-		return false, nil
+		return false
 	}
 
 	if len(stderr) > 0 {
-		return false, nil
+		return false
 	}
 
 	if strings.ToLower(stdout) == "yes" {
 		node.AppArmorEnabled = true
-		return true, nil
+		return true
 	}
 
-	return false, nil
+	return false
 }
 
 // AppArmorStatus gets AppArmor enforced profiles on worker nodes
@@ -255,6 +249,10 @@ func (aa *AppArmor) AppArmorStatus() (types.NodeList, error) {
 }
 
 func (aa *AppArmor) status(node *types.Node) error {
+	if node.IsMaster() {
+		return nil
+	}
+
 	err := aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
 	if err != nil {
 		return err
@@ -262,7 +260,7 @@ func (aa *AppArmor) status(node *types.Node) error {
 
 	defer aa.sshClient.Close()
 
-	if node.IsMaster() {
+	if !aa.enabledInConnection(node) {
 		return nil
 	}
 

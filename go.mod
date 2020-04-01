@@ -1,4 +1,4 @@
-module github.com/draios/internal-sysdig-labs/apparmor
+module github.com/sysdiglabs/kube-apparmor-manager
 
 go 1.14
 
