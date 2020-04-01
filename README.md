@@ -5,6 +5,28 @@ Manage AppAmormor profiles for Kubernetes cluster
 - `AppArmorProfile` CRD is created and `AppArmorProfile` objects are stored in etcd.
 - Actual AppArmor profiles will be created(updated) acorss all worker nodes through synchronizing with `AppArmorProfile` objects.
 
+### AppArmorProfile Object Explained
+```
+apiVersion: crd.security.sysdig.com/v1alpha1
+kind: AppArmorProfile
+metadata:
+  name: apparmorprofile-sample
+spec:
+  rules: |
+    # This is the default deny mode of AppArmor profile.
+    # List the allow rules here separated by new line character.
+    
+    # allow few read/write activities
+    allow /etc/* r,
+    allow /tmp/* rw,
+
+    # allow few commands execution
+    allow /bin/echo mrix,
+    allow /bin/sleep mrix,
+    allow /bin/cat mrix,
+  enforced: true # set profile to enforcement mode if true (complain mode if false)
+```
+
 ## Configure Environment
 - `SSH_USERNAME`: SSH username to access worker nodes (default: admin)
 - `SSH_PERM_FILE`: SSH private key to access worker ndoes (default: $HOME/.ssh/id_rsa)
