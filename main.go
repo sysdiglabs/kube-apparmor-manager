@@ -31,7 +31,7 @@ func main() {
 	var rootCmd = &cobra.Command{
 		Use:   "kube-apparmor-manager",
 		Short: "kube-apparmor-manager manages AppArmor service and profiles enforcement on worker nodes",
-		Long:  "kube-apparmor-manager manages AppArmor service and profiles enforcement on worker nodes through syncing with ApparmorProfile CRD in Kubernetes cluster",
+		Long:  "kube-apparmor-manager manages AppArmor service and profiles enforcement on worker nodes through syncing with AppArmorProfile CRD in Kubernetes cluster",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			lvl, err := log.ParseLevel(logLevel)
 			if err != nil {
