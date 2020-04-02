@@ -10,14 +10,14 @@ metadata:
 spec:
   group: crd.security.sysdig.com
   names:
-    kind: ApparmorProfile
-    listKind: ApparmorProfileList
+    kind: AppArmorProfile
+    listKind: AppArmorProfileList
     plural: apparmorprofiles
     singular: apparmorprofile
   scope: Cluster
   validation:
     openAPIV3Schema:
-      description: ApparmorProfile is the Schema for the apparmorprofiles API
+      description: AppArmorProfile is the Schema for the AppArmorprofiles API
       properties:
         apiVersion:
           description: 'APIVersion defines the versioned schema of this representation
@@ -32,7 +32,7 @@ spec:
         metadata:
           type: object
         spec:
-          description: ApparmorProfileSpec defines the desired state of ApparmorProfile
+          description: AppArmorProfileSpec defines the desired state of AppArmorProfile
           properties:
             enforced:
               type: boolean
@@ -45,7 +45,7 @@ spec:
           - enforced
           type: object
         status:
-          description: ApparmorProfileStatus defines the observed state of ApparmorProfile
+          description: AppArmorProfileStatus defines the observed state of AppArmorProfile
           type: object
       type: object
   version: v1alpha1

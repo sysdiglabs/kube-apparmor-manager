@@ -89,6 +89,7 @@ func (c *K8sClient) InstallCRD() error {
 			Names: apiextensions.CustomResourceDefinitionNames{
 				Plural:     v1alpha1.Plural,
 				Kind:       v1alpha1.Kind,
+				ListKind:   v1alpha1.ListKind,
 				ShortNames: []string{"aap"},
 			},
 		},
