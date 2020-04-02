@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -31,7 +32,7 @@ func main() {
 		FullTimestamp: true,
 	})
 
-	binaryArg := os.Args[0]
+	binaryArg := getBinary(os.Args[0])
 	var rootCmd = &cobra.Command{
 		Use:   binaryArg,
 		Short: fmt.Sprintf("%s manages AppArmor service and profiles enforcement on worker nodes", binaryArg),
@@ -111,4 +112,22 @@ func main() {
 	rootCmd.AddCommand(enabledCmd)
 
 	rootCmd.Execute()
+}
+
+const (
+	defaultBinary = "kube-apparmor-manager"
+
+	kubectlBinary = "kubectl apparmor-manager"
+)
+
+func getBinary(arg string) string {
+	list := strings.Split(arg, "/")
+
+	binary := list[len(list)-1]
+
+	if binary == defaultBinary {
+		return binary
+	}
+
+	return kubectlBinary
 }
