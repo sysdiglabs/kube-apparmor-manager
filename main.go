@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 
@@ -121,9 +121,7 @@ const (
 )
 
 func getBinary(arg string) string {
-	list := strings.Split(arg, "/")
-
-	binary := list[len(list)-1]
+	_, binary := filepath.Split(arg)
 
 	if binary == defaultBinary {
 		return binary
