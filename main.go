@@ -33,10 +33,17 @@ func main() {
 	})
 
 	binaryArg := getBinary(os.Args[0])
+
+	extBinaryArg := binaryArg
+
+	if extBinaryArg == kubectlBinary {
+		extBinaryArg = fmt.Sprintf("kubectl %s", kubectlBinary)
+	}
+
 	var rootCmd = &cobra.Command{
 		Use:   binaryArg,
-		Short: fmt.Sprintf("%s manages AppArmor service and profiles enforcement on worker nodes", binaryArg),
-		Long:  fmt.Sprintf("%s manages AppArmor service and profiles enforcement on worker nodes through syncing with AppArmorProfile CRD in Kubernetes cluster", binaryArg),
+		Short: fmt.Sprintf("%s manages AppArmor service and profiles enforcement on worker nodes", extBinaryArg),
+		Long:  fmt.Sprintf("%s manages AppArmor service and profiles enforcement on worker nodes through syncing with AppArmorProfile CRD in Kubernetes cluster", extBinaryArg),
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			lvl, err := log.ParseLevel(logLevel)
 			if err != nil {
@@ -117,7 +124,7 @@ func main() {
 const (
 	defaultBinary = "kube-apparmor-manager"
 
-	kubectlBinary = "kubectl apparmor-manager"
+	kubectlBinary = "apparmor-manager"
 )
 
 func getBinary(arg string) string {
