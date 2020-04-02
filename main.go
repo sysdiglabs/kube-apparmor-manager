@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 
 	log "github.com/sirupsen/logrus"
@@ -28,10 +31,11 @@ func main() {
 		FullTimestamp: true,
 	})
 
+	binaryArg := os.Args[0]
 	var rootCmd = &cobra.Command{
-		Use:   "kube-apparmor-manager",
-		Short: "kube-apparmor-manager manages AppArmor service and profiles enforcement on worker nodes",
-		Long:  "kube-apparmor-manager manages AppArmor service and profiles enforcement on worker nodes through syncing with AppArmorProfile CRD in Kubernetes cluster",
+		Use:   binaryArg,
+		Short: fmt.Sprintf("%s manages AppArmor service and profiles enforcement on worker nodes", binaryArg),
+		Long:  fmt.Sprintf("%s manages AppArmor service and profiles enforcement on worker nodes through syncing with AppArmorProfile CRD in Kubernetes cluster", binaryArg),
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			lvl, err := log.ParseLevel(logLevel)
 			if err != nil {
