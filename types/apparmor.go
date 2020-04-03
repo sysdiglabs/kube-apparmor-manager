@@ -67,7 +67,7 @@ type AppArmorProfile struct {
 func (p AppArmorProfile) String() string {
 	ret := ""
 
-	ret += fmt.Sprintf("profile %s flags=(attach_disconnected) {\n", p.Name)
+	ret += fmt.Sprintf("profile %s flags=(attach_disconnected,mediate_deleted) {\n", p.Name)
 
 	lines := strings.Split(p.Rules, "\n")
 
