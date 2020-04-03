@@ -27,6 +27,16 @@ spec:
   enforced: true # set profile to enforcement mode if true (complain mode if false)
 ```
 
+## Install as a Krew Plugin
+
+Follow the [instructions](https://github.com/kubernetes-sigs/krew#installation) to install `krew`. Then run the following command:
+
+```
+kubectl krew install advise-psp
+```
+
+The plugin will be available as `kubectl advise-psp`.
+
 ## Configure Environment
 - `SSH_USERNAME`: SSH username to access worker nodes (default: admin)
 - `SSH_PERM_FILE`: SSH private key to access worker ndoes (default: $HOME/.ssh/id_rsa)
