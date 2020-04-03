@@ -32,10 +32,10 @@ spec:
 Follow the [instructions](https://github.com/kubernetes-sigs/krew#installation) to install `krew`. Then run the following command:
 
 ```
-kubectl krew install advise-psp
+kubectl krew install apparmor-manager
 ```
 
-The plugin will be available as `kubectl advise-psp`.
+The plugin will be available as `kubectl apparmor-manager`.
 
 ## Configure Environment
 - `SSH_USERNAME`: SSH username to access worker nodes (default: admin)
