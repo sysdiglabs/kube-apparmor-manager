@@ -52,7 +52,7 @@ func NewAppArmor() (*AppArmor, error) {
 	ssh, err := client.NewSSHClientConfig(username, sshPermFile, sshPassPhrase)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error configuring SSH client, make sure you setup the credentials correctly")
 	}
 	return &AppArmor{
 		k8sClient: k8s,

@@ -12,20 +12,13 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 )
 
-var (
-	appArmor *aa.AppArmor
-	err      error
-)
-
-func init() {
-	appArmor, err = aa.NewAppArmor()
+func main() {
+	appArmor, err := aa.NewAppArmor()
 
 	if err != nil {
 		panic(err)
 	}
-}
 
-func main() {
 	var logLevel string
 
 	log.SetFormatter(&log.TextFormatter{
