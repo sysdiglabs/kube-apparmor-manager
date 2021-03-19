@@ -1,5 +1,5 @@
 # kube-apparmor-manager
-Manage AppAmormor profiles for Kubernetes cluster
+Manage AppArmor profiles for Kubernetes cluster
 
 ## Behind the Scenes
 - `AppArmorProfile` CRD is created and `AppArmorProfile` objects are stored in etcd.
