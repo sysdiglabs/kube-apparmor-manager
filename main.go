@@ -20,6 +20,7 @@ func main() {
 	}
 
 	var logLevel string
+	var useInternalIP bool
 
 	log.SetFormatter(&log.TextFormatter{
 		FullTimestamp: true,
@@ -44,10 +45,12 @@ func main() {
 			}
 
 			log.SetLevel(lvl)
+			appArmor.UseInternalIP(useInternalIP)
 		},
 	}
 
 	rootCmd.PersistentFlags().StringVar(&logLevel, "level", "info", "Log level")
+	rootCmd.PersistentFlags().BoolVarP(&useInternalIP, "internal-ip", "i", false, "Use internal ip to sync")
 
 	var initCmd = &cobra.Command{
 		Use:   "init",
