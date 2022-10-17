@@ -25,6 +25,7 @@ const (
 type AppArmor struct {
 	k8sClient *client.K8sClient
 	sshClient *client.SSHClient
+	useInternalIP bool
 }
 
 // NewAppArmor returns a new AppArmor object
@@ -57,7 +58,12 @@ func NewAppArmor() (*AppArmor, error) {
 	return &AppArmor{
 		k8sClient: k8s,
 		sshClient: ssh,
+		useInternalIP: false,
 	}, nil
+}
+
+func (aa *AppArmor) UseInternalIP(useInternalIP bool) {
+	aa.useInternalIP = useInternalIP
 }
 
 // InstallCRD installs CRD in Kubernetes
@@ -88,7 +94,12 @@ func (aa *AppArmor) install(node *types.Node) error {
 		return nil
 	}
 
-	err := aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	var err error
+	if aa.useInternalIP {
+		err = aa.sshClient.Connect(node.InternalIP, SSH_PORT)
+	} else {
+		err = aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	}
 
 	if err != nil {
 		return err
@@ -97,7 +108,11 @@ func (aa *AppArmor) install(node *types.Node) error {
 	defer aa.sshClient.Close()
 
 	if aa.enabledInConnection(node) {
-		klog.Infof("AppArmor was enabled on node: %s (external IP: %s)", node.NodeName, node.ExternalIP)
+		if aa.useInternalIP {
+			klog.Infof("AppArmor was enabled on node: %s (internal IP: %s)", node.NodeName, node.InternalIP)
+		} else {
+			klog.Infof("AppArmor was enabled on node: %s (external IP: %s)", node.NodeName, node.ExternalIP)
+		}
 		return nil
 	}
 
@@ -141,7 +156,13 @@ func (aa *AppArmor) syncProfile(node *types.Node, profile types.AppArmorProfile)
 		return nil
 	}
 
-	err := aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	var err error
+	if aa.useInternalIP {
+		err = aa.sshClient.Connect(node.InternalIP, SSH_PORT)
+	} else {
+		err = aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	}
+
 	if err != nil {
 		return err
 	}
@@ -149,7 +170,11 @@ func (aa *AppArmor) syncProfile(node *types.Node, profile types.AppArmorProfile)
 	defer aa.sshClient.Close()
 
 	if !aa.enabledInConnection(node) {
-		klog.Infof("AppArmor was not enabled on node: %s (external IP: %s), no sync happen.", node.NodeName, node.ExternalIP)
+		if aa.useInternalIP {
+			klog.Infof("AppArmor was not enabled on node: %s (internal IP: %s), no sync happen.", node.NodeName, node.InternalIP)
+		} else {
+			klog.Infof("AppArmor was not enabled on node: %s (external IP: %s), no sync happen.", node.NodeName, node.ExternalIP)
+		}
 		return nil
 	}
 
@@ -196,7 +221,12 @@ func (aa *AppArmor) enabled(node *types.Node) (bool, error) {
 		return false, nil
 	}
 
-	err := aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	var err error
+	if aa.useInternalIP {
+		err = aa.sshClient.Connect(node.InternalIP, SSH_PORT)
+	} else {
+		err = aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	}
 	if err != nil {
 		return false, err
 	}
@@ -249,7 +279,12 @@ func (aa *AppArmor) status(node *types.Node) error {
 		return nil
 	}
 
-	err := aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	var err error
+	if aa.useInternalIP {
+		err = aa.sshClient.Connect(node.InternalIP, SSH_PORT)
+	} else {
+		err = aa.sshClient.Connect(node.ExternalIP, SSH_PORT)
+	}
 	if err != nil {
 		return err
 	}
